@@ -1,6 +1,6 @@
 import './App.css';
 import { Provider } from 'react-redux';
-import configereStore, { history } from './redux/configureStore';
+import configereStore from './redux/configureStore';
 import Main from './components/Main';
 
 const store = configereStore(/* provide initial state if any */)
