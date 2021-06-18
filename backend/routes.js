@@ -13,7 +13,7 @@ module.exports = function (app) {
         const selectedCurrencies = req.body.selectedCurrencies
         const currencies = await axios.get("https://www.nbrb.by/API/ExRates/Rates?Periodicity=0")
         const getNewCurrencies = currencies.data.filter(currency => {
-            if (!selectedCurrencies.find(selectedCurrency => selectedCurrency.Cur_Abbreviation === currency.Cur_Abbreviation)) {
+            if (!(selectedCurrencies.find(selectedCurrency => selectedCurrency.Cur_Abbreviation === currency.Cur_Abbreviation))) {
                 return currency
             }
 
@@ -58,13 +58,21 @@ module.exports = function (app) {
         const getNewValueCurrencies = selectedCurrencies.map(currency => {
             const value = convert(valueBYN, currency.Cur_OfficialRate, currency.Cur_Scale)
             const roundValue = (value) => {
-                return +value.toFixed(4);;
+                return +value.toFixed(4);
             }
             return { ...currency, Cur_Value: roundValue(value) }
         })
         const changeValueBYN = getNewValueCurrencies.find(currency => currency.Cur_Abbreviation === "BYN").Cur_Value = valueBYN
         res.send(getNewValueCurrencies)
     })
+    app.post('/add_currency', async (req, res) => {
+        const currencyBYN = req.body.currencyBYN
+        const newCurrency = req.body.newCurrency
 
-
+        const value = convert(currencyBYN.Cur_Value, newCurrency.Cur_OfficialRate, newCurrency.Cur_Scale)
+        const roundValue = (value) => {
+            return +value.toFixed(4);
+        }
+        res.send({ ...newCurrency, Cur_Value: roundValue(value) })
+    })
 }
