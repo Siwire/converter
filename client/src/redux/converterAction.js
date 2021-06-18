@@ -3,15 +3,14 @@ import { NEW_CURRENCIES, CURRENCIES, CHANGE_VALUE_CURRENCY, CHANGE_VALUE } from 
 
 const urlLocal = 'http://localhost:8000';
 
-export const getNewCurrencies = (defaultCurrencies,) => {
+export const getNewCurrencies = (selectedCurrencies) => {
     return async (dispatch) => {
-        const newCurrencies = await axios.post(`${urlLocal}/get_new_currencies`,)
+        const newCurrencies = await axios.post(`${urlLocal}/get_new_currencies`,{selectedCurrencies})
         dispatch({ type: NEW_CURRENCIES, payload: newCurrencies.data })
     }
 }
 export const setSelectedCurrencies = () => {
     return async dispatch => {
-        const defaultCurrencies = ["USD", "EUR", "RUB"];
         const currencies = await axios.post(`${urlLocal}/get_currencies`, )
         dispatch({ type: CURRENCIES, payload: currencies.data })
     }

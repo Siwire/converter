@@ -10,14 +10,15 @@ const convertToBYN = (valueCurr, currRate, currScale) => {
 const defaultCurrencies = ["USD", "EUR", "RUB"];
 module.exports = function (app) {
     app.post('/get_new_currencies', async (req, res) => {
+        const selectedCurrencies = req.body.selectedCurrencies
         const currencies = await axios.get("https://www.nbrb.by/API/ExRates/Rates?Periodicity=0")
-        const getDefaultCurrencies = currencies.data.filter(currency => {
-            if (!defaultCurrencies.find(defCurrency => defCurrency === currency.Cur_Abbreviation)) {
+        const getNewCurrencies = currencies.data.filter(currency => {
+            if (!selectedCurrencies.find(selectedCurrency => selectedCurrency.Cur_Abbreviation === currency.Cur_Abbreviation)) {
                 return currency
             }
 
         })
-        res.send(getDefaultCurrencies)
+        res.send(getNewCurrencies)
     })
     app.post('/get_currencies', async (req, res) => {
         const startCurrencies = defaultCurrencies
