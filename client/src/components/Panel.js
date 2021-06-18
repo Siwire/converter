@@ -20,7 +20,7 @@ export default function Panel({ converter, converterActions }) {
 
     useEffect(() => {
         setSelectedCurrencies()
-        getNewCurrencies(converter.selectedCurrencies)
+        getNewCurrencies(converter.currencies)
     }, []);
 
     const panelStyles = useStyles()

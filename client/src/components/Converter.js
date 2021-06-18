@@ -2,12 +2,15 @@ import { Grid, makeStyles } from "@material-ui/core";
 import ListСurrency from "./ListСurrency";
 import AddCurrency from "./AddCurrency";
 
-export default function Converter({converter, converterAction}) {
+export default function Converter({ converter, converterAction }) {
 
     const converterStyles = useStyles()
     return (<Grid className={converterStyles.root} item xs={12}>
-        <ListСurrency currencies={converter.currencies} converterActions={converterAction}/>
-        <AddCurrency currencies={converter.currencies} newCurrencies={converter.newCurrencies} getNewCurrencies={converterAction.getNewCurrencies}/>
+        <ListСurrency currencies={converter.currencies} converterActions={converterAction} />
+        <AddCurrency currencies={converter.currencies} currencyBYN={converter.currencyBYN}
+            newCurrencies={converter.newCurrencies} getNewCurrencies={converterAction.getNewCurrencies}
+            addNewCurrency={converterAction.addNewCurrency}
+        />
     </Grid>)
 }
 

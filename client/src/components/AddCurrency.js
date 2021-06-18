@@ -4,7 +4,7 @@ import ItemAddCurrency from './ItemAddCurrency'
 
 
 
-export default function AddCurrency({ currencies, newCurrencies, getNewCurrencies }) {
+export default function AddCurrency({ currencies, newCurrencies, currencyBYN, getNewCurrencies, addNewCurrency }) {
 
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
@@ -46,9 +46,9 @@ export default function AddCurrency({ currencies, newCurrencies, getNewCurrencie
                 >
                     <Paper>
                         <ClickAwayListener onClickAway={handleClose}>
-                            <MenuList autoFocusItem={open} id="menu-list-grow" className={addCurStyles.list} onKeyDown={handleListKeyDown}>
+                            <MenuList autoFocusItem={open} id="menu-list-grow" onClick={handleClose} className={addCurStyles.list} onKeyDown={handleListKeyDown}>
                                 {newCurrencies && newCurrencies.map(newCur => {
-                                    return <ItemAddCurrency key={newCur.Cur_Abbreviation} newCur={newCur} />
+                                    return <ItemAddCurrency  key={newCur.Cur_Abbreviation} newCur={newCur} currencyBYN={currencyBYN} addNewCurrency={addNewCurrency}/>
                                 })}
                             </MenuList>
                         </ClickAwayListener>

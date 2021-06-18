@@ -1,14 +1,16 @@
-import { NEW_CURRENCIES, CURRENCIES, CHANGE_VALUE } from './converterTypes'
+import { NEW_CURRENCIES, CURRENCIES, CHANGE_VALUE, ADD_CURRENCY } from './converterTypes'
 
 const initialState = {
     currencies: [],
     newCurrencies: [],
+    currencyBYN: [],
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case CURRENCIES: {
             state.currencies = action.payload
+            state.currencyBYN = action.payload.find(currency => currency.Cur_Abbreviation === "BYN")
             return {
                 ...state,
             }
@@ -17,6 +19,12 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 newCurrencies: action.payload
+            }
+        }
+        case ADD_CURRENCY: {
+            state.currencies.push(action.payload)
+            return {
+                ...state,
             }
         }
         case CHANGE_VALUE: {
