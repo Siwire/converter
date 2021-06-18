@@ -1,9 +1,11 @@
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, Typography } from '@material-ui/core';
 import Converter from './Converter'
+import { useEffect } from 'react';
 
-export default function Panel() {
+export default function Panel({ converter, converterActions }) {
 
+    const { getNewCurrencies, setSelectedCurrencies } = converterActions
 
     const getCurrentDate = () => {
         const currentTime = new Date()
@@ -14,6 +16,14 @@ export default function Panel() {
         const currentDate = `${day}.${monthCorrect}.${year}`
         return currentDate
     }
+
+
+    useEffect(() => {
+        setSelectedCurrencies()
+        getNewCurrencies(converter.selectedCurrencies)
+
+    }, []);
+
     const panelStyles = useStyles()
 
     return (<Grid item xs={6} container justify="center" direction="column">
@@ -23,8 +33,8 @@ export default function Panel() {
             <Typography className={panelStyles.text} >Официальный курс, устанавливаемый Национальным банком Республики Беларусь на {getCurrentDate()}</Typography>
 
         </Grid>
-        <Grid>
-            <Converter />
+        <Grid item xs={12}>
+            <Converter converter={converter} converterAction={converterActions} />
         </Grid>
     </Grid>
     )
