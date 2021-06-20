@@ -1,10 +1,10 @@
 import { Grid, ListItem, Typography, TextField, makeStyles } from "@material-ui/core";
 
-export default function ItemСurrency({ currency, currencies, getNewValueCurrency }) {
+export default function ItemСurrency({ currency, currencies, handleChangeCurrencyInputValue }) {
 
     const handleChange = (event) => {
         event.preventDefault()
-        getNewValueCurrency(event.target.name, event.target.value, currencies)
+        handleChangeCurrencyInputValue(event.target.name, event.target.value, currencies);
     }
 
     const itemStyles = useStyles()
@@ -15,7 +15,7 @@ export default function ItemСurrency({ currency, currencies, getNewValueCurrenc
                 <Typography>{currency.Cur_Abbreviation}</Typography>
             </Grid>
             <Grid item xs={12} sm={10}>
-                <TextField className={itemStyles.input} onChange={handleChange} name={currency.Cur_Abbreviation} id={currency.Cur_Abbreviation} value={currency.Cur_Value} variant="outlined" />
+                <TextField className={itemStyles.input} onChange={handleChange} name={currency.Cur_Abbreviation} id={currency.Cur_Abbreviation} value={currency.value} variant="outlined" />
             </Grid>
         </Grid>
     </ListItem>)

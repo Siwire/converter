@@ -6,7 +6,7 @@ export default function ListСurrency({ currencies, converterActions}) {
         <List>
             {
                 currencies && currencies.map((currency, index) => {
-                    return <ItemСurrency key={index} currency={currency} currencies={currencies} getNewValueCurrency={converterActions.getNewValueCurrency}/>
+                    return <ItemСurrency key={index} currency={currency} currencies={currencies} handleChangeCurrencyInputValue={converterActions.handleChangeCurrencyInputValue}/>
                 })
             }
         </List>

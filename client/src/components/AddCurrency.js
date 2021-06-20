@@ -4,28 +4,33 @@ import ItemAddCurrency from './ItemAddCurrency'
 
 
 
-export default function AddCurrency({ currencies, newCurrencies, currencyBYN, getNewCurrencies, addNewCurrency }) {
+export default function AddCurrency({ currencies, allCurrencies, fetchAddNewCurrency }) {
 
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
 
     const handleToggle = () => {
-        getNewCurrencies(currencies)
         setOpen((prevOpen) => !prevOpen);
     };
+
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
         setOpen(false);
     };
-    function handleListKeyDown(event) {
+
+    const handleListKeyDown = (event) => {
         if (event.key === 'Tab') {
             event.preventDefault();
             setOpen(false);
         }
     }
-    const prevOpen = useRef(open);
+
+    const handleAddNewCurrency = (newCurrencyAbbr) => {
+        const currencyBYN = currencies.find((currency) => currency.Cur_Abbreviation === 'BYN');
+        fetchAddNewCurrency(newCurrencyAbbr, currencyBYN.value);
+    }
 
     const addCurStyles = useStyles()
 
@@ -48,9 +53,11 @@ export default function AddCurrency({ currencies, newCurrencies, currencyBYN, ge
                     <Paper className={addCurStyles.paper}>
                         <ClickAwayListener onClickAway={handleClose}>
                             <MenuList autoFocusItem={open} id="menu-list-grow" onClick={handleClose} className={addCurStyles.list} onKeyDown={handleListKeyDown}>
-                                {newCurrencies && newCurrencies.map(newCur => {
-                                    return <ItemAddCurrency key={newCur.Cur_Abbreviation} newCur={newCur} currencyBYN={currencyBYN} addNewCurrency={addNewCurrency} />
-                                })}
+                                {
+                                    allCurrencies && allCurrencies
+                                        .filter((currency) => !currencies.find((item) => item.Cur_Abbreviation === currency.Cur_Abbreviation))
+                                        .map((newCurrency) => (<ItemAddCurrency key={newCurrency.Cur_Abbreviation} newCurrency={newCurrency} handleAddNewCurrency={handleAddNewCurrency} />))
+                                }
                             </MenuList>
                         </ClickAwayListener>
                     </Paper>
@@ -66,12 +73,6 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: "200px",
         overflow: "auto",
 
-    },
-    paper: {
-        // width: "95%",
-        // display: "block",
-        // marginLeft: "auto",
-        // marginRight: "auto",
     },
     bttn: {
         padding: "10px",

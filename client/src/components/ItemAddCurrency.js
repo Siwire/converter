@@ -1,22 +1,23 @@
 import { Grid, MenuItem, Typography, makeStyles } from "@material-ui/core";
 
-export default function ItemAddCurrency({ newCur, currencyBYN, addNewCurrency, onClick }) {
+export default function ItemAddCurrency({ newCurrency, handleAddNewCurrency }) {
 
     const handleClick = () => {
-        addNewCurrency(newCur, currencyBYN)
+        handleAddNewCurrency(newCurrency);
     }
 
-    const newCurStyles = useStyles()
+    const newCurStyles = useStyles();
+
     return (<MenuItem onClick={handleClick} className={newCurStyles.root}>
-        <Grid container direction="row" alignItems="center" item xs={12} >
+        <Grid container direction="row" alignItems="center" item xs={12}>
             <Grid item sm={2} xs={1}>
                 <Typography className={newCurStyles.name}>
-                    {newCur.Cur_Abbreviation}
+                    {newCurrency.Cur_Abbreviation}
                 </Typography>
             </Grid>
             <Grid item sm={10} xs={12} >
                 <Typography className={newCurStyles.text}>
-                    {newCur.Cur_Name}
+                    {newCurrency.Cur_Name}
                 </Typography>
             </Grid>
         </Grid>
