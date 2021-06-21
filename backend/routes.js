@@ -3,9 +3,6 @@ const axios = require('axios');
 const convert = (valueBYN, currRate, currScale) => {
     return valueBYN / currRate * currScale
 }
-const convertToBYN = (valueCurr, currRate, currScale) => {
-    return valueCurr * currRate / currScale
-}
 
 const defaultCurrencies = ["USD", "EUR", "RUB"];
 module.exports = function (app) {
@@ -39,16 +36,17 @@ module.exports = function (app) {
         const changedCurrency = currencies.find((cur) => cur.Cur_Abbreviation === target);
         const changedCurrencyInBYN = changedCurrency.Cur_OfficialRate * value / changedCurrency.Cur_Scale;
 
-        const result = currencies.map((currency) => {
-            const { Cur_Scale } = currency;
+        const response = currencies.map((currency) => {
             if (currency.Cur_Abbreviation === target) {
                 return { ...currency, value };
             }
-            const currencyValue = changedCurrencyInBYN / currency.Cur_OfficialRate;
-            return { ...currency, value: (parseFloat(currencyValue) * Cur_Scale).toFixed(4) };
+            else {
+                const value = convert(changedCurrencyInBYN, currency.Cur_OfficialRate, currency.Cur_Scale);
+                return { ...currency, value: value !== 0 ? +value.toFixed(4) : 0 };
+            }
         });
 
-        res.send(result);
+        res.send(response);
     });
 
     app.post('/add_currency', async (req, res) => {
