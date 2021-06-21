@@ -3,11 +3,13 @@ import { Grid, ListItem, Typography, TextField, makeStyles } from "@material-ui/
 export default function ItemСurrency({ currency, currencies, handleChangeCurrencyInputValue }) {
 
     const handleChange = (event) => {
-        event.preventDefault()
-        handleChangeCurrencyInputValue(event.target.name, event.target.value, currencies);
+        event.preventDefault();
+        if (/^\d*\.?\d*$/.test(event.target.value)) {
+            handleChangeCurrencyInputValue(event.target.name, event.target.value, currencies);            
+        }
     }
 
-    const itemStyles = useStyles()
+    const itemStyles = useStyles();
 
     return (<ListItem >
         <Grid container item xs={12} alignItems="center" direction="row">
@@ -15,7 +17,7 @@ export default function ItemСurrency({ currency, currencies, handleChangeCurren
                 <Typography>{currency.Cur_Abbreviation}</Typography>
             </Grid>
             <Grid item xs={12} sm={10}>
-                <TextField className={itemStyles.input} onChange={handleChange} name={currency.Cur_Abbreviation} id={currency.Cur_Abbreviation} value={currency.value} variant="outlined" />
+                <TextField className={itemStyles.input} autoComplete="off" onChange={handleChange} name={currency.Cur_Abbreviation} id={currency.Cur_Abbreviation} value={currency.value} variant="outlined" />
             </Grid>
         </Grid>
     </ListItem>)
