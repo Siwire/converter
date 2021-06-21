@@ -1,4 +1,5 @@
 const axios = require('axios');
+require('dotenv').config();
 
 const convert = (valueBYN, currRate, currScale) => {
     return valueBYN / currRate * currScale
@@ -8,7 +9,7 @@ const defaultCurrencies = ["USD", "EUR", "RUB"];
 module.exports = function (app) {
     app.post('/get_new_currencies', async (req, res) => {
         const selectedCurrencies = req.body;
-        const currencies = await axios.get("https://www.nbrb.by/API/ExRates/Rates?Periodicity=0");
+        const currencies = await axios.get(`${process.env.GET_ALL_CURRENCIES}`);
         const getNewCurrencies = currencies.data.filter(currency => {
             if (!(selectedCurrencies.find(selectedCurrency => selectedCurrency.Cur_Abbreviation === currency.Cur_Abbreviation))) {
                 return currency;
@@ -17,8 +18,8 @@ module.exports = function (app) {
         res.send(getNewCurrencies);
     });
 
-    app.post('/get_currencies', async (req, res) => {
-        const currencies = await axios.get("https://www.nbrb.by/API/ExRates/Rates?Periodicity=0")
+    app.get('/get_currencies', async (req, res) => {
+        const currencies = await axios.get(`${process.env.GET_ALL_CURRENCIES}`)
         const getDefaultCurrencies = currencies.data.filter(currency => defaultCurrencies.find(startCurrency => startCurrency === currency.Cur_Abbreviation));
         const currencyUSD = getDefaultCurrencies.find((currency) => currency.Cur_Abbreviation === "USD");
         const defaultUSDInBYN = currencyUSD.Cur_OfficialRate;
